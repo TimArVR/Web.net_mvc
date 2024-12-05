@@ -1,0 +1,106 @@
+﻿@using WebNETFirstProj.Models;
+@* Можно подключать пространства имен как в С#, тогда можно не писать так о модели:
+@model WebNETFirstProj.Controllers.Person[]
+ *@
+ @model Person[]
+
+
+<h2>FOREACH</h2>
+<ul>
+	@foreach (Person p in Model)
+	{
+		<li>@p.FirstName</li>
+	}
+
+</ul>
+
+
+<h2>FOR loop</h2>
+<ul>
+	@for (int i = 0; i < Model.Length; i++)
+	{
+		<li>@Model[i].LastName</li>
+	}
+</ul>
+
+
+<h2>WHILE loop</h2>
+<ul>
+	@{
+		int j = 0;
+	}
+	@while (j < Model.Length)
+	{
+		<li>@(Model[j].LastName + " " + Model[j].FirstName)</li>
+		j++;
+	}
+</ul>
+
+<h2>DO WHILE loop</h2>
+<ul>
+	@{
+		int k = 0;
+	}
+	@{
+		do
+		{
+			<li>@(Model[k].LastName + " " + Model[k].FirstName)</li>
+			k++;
+		} while (k < Model.Length);
+	}
+</ul>
+
+
+<hr/>
+
+<h3>Вызов циклов асинхронно с помощью PartialView</h3>
+
+<h2>FOREACH</h2>
+<ul>
+	@foreach (Person p in Model)
+	{
+		<li>@await Html.PartialAsync("~/Views/Widgets/person.cshtml", p)</li>
+	}
+
+</ul>
+
+<hr />
+
+<h2>FOR loop</h2>
+<ul>
+	@for (int i = 0; i < Model.Length; i++)
+	{
+		<li>@await Html.PartialAsync("~/Views/Widgets/person.cshtml", Model[i])</li>
+	}
+</ul>
+
+<hr />
+
+<h2>WHILE loop</h2>
+<ul>
+	@{
+		int z = 0;
+	}
+	@while (z < Model.Length)
+	{
+		<li>@await Html.PartialAsync("~/Views/Widgets/person.cshtml", Model[z])</li>
+		z++;
+	}
+</ul>
+
+<hr />
+
+<h2>DO WHILE loop</h2>
+<ul>
+	@{
+		int m = 0;
+	}
+	@{
+		do
+		{
+			<li>@await Html.PartialAsync("~/Views/Widgets/person.cshtml", Model[m])</li>
+			m++;
+		} while (m < Model.Length);
+	}
+</ul>
+<hr />

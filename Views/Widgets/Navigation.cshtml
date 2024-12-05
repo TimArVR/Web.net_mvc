@@ -1,0 +1,18 @@
+﻿@model WebNETFirstProj.Models.Navigation
+
+@* PARTIAL смотри Home/Index как его подключить этот виджет*@
+
+<div>
+	Найдено
+	<a href="/@Model.PageName/index?page=1">&lt;</a>
+	@for (int i = 1; i <= Model.Pages; i++)
+	{
+		<a href="/@Model.PageName/index?page=@i">@i</a>
+
+	}
+
+	<a href="/@Model.PageName/index?page=@Model.Pages">&gt;</a>
+
+</div>
+
+

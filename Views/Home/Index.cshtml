@@ -1,0 +1,105 @@
+﻿@using WebNETFirstProj.Models;
+@model Person
+
+@* Добавим layout, который будет в этом представлении отображать шаблонный чердак и подвал
+ *@
+
+@{
+
+	@*  Layout = "~/Views/Shared/_Layout.cshtml";
+	убрали отдельный Layout, потому что задействован магический глобальный _ViewStart *@
+}
+
+
+<h1> FIRST MY VIEW</h1>
+<p>Name: @Model.FirstName</p>
+<p>Last: @Model.LastName</p>
+
+
+
+@* подключаем PARTIAL смотри Widgets/Navigation где этот виджет описан, это первый способ Html.Partial(""),
+	2 раза подключили здесь ниже, и в самом низу еще раз то же самое
+НО у него есть недостаток: потенциально возможен DEADLOCK, поэтому лучше асинхронно Html.PartialAsync
+*@
+@Html.Partial("~/Views/Widgets/Navigation.cshtml", new WebNETFirstProj.Models.Navigation(){CurrentPage=1,FoundItems=40,PageName="Home"})
+
+@await Html.PartialAsync("~/Views/Widgets/person.cshtml",  Model)
+
+
+
+
+
+
+
+
+
+
+
+<p>@(Int32.Parse("123") * 2)</p>
+<p>
+	@Int32.Parse("123")*2
+
+
+	@* Надо предпочитать максимально делать html и css, а не шарпами (как LastName ниже)
+потому что например если надо перенести код на питон то razor надо будет переделывать: *@
+<p>Name: @("Mr " + Model.FirstName)</p>
+<p>Last: Mr @Model.LastName</p>
+
+<p>Name: @("Mr ".ToUpper() + Model.FirstName)</p>
+<p>Last: MR @Model.LastName</p>
+
+<hr />
+
+	@* Если мы написали @ AT символ, но мы начали си шарп. Можно не болько отдельные операции, но и блоки кода 
+	с фигурными скобками @ {}. См ниже:
+	Однако это плохой пример, лучше делать как выше - в контроллере писать код и передавать в представление 
+	через модель*@
+
+	@{
+		Person p1 = new Person() { };
+		p1.FirstName = "Макколей";
+		p1.LastName = "Калкин";
+	}
+<p>Name: @p1.FirstName</p>
+<p>Last: @p1.LastName</p>
+
+	@* 	Си шарп код и html код можно миксовать, либо как выше, либо наоборот, добавив html теги в блок шарпового кода,
+	либо с помощью собачики и двоеточия @:
+ *@
+	@{
+		int i = 10;
+	<p>Переменная = @i</p>
+		i = i + 20;
+		@: i*30
+	<p>Переменная = @i</p>
+	}
+
+	@* 	УСЛОВНЫЕ ОПЕРАТОРЫ 
+	@if () {}
+	@switch
+	А можно писать в режиме си шарп кода обычные if else
+*@
+
+	@if (p1.FirstName == "Макколей")
+	{
+	<p>Это true, привет Макколей</p>
+	}
+	else
+	{
+	<p>Это false</p>
+	}
+
+	@if (Model.Age < 14)
+	{
+	<p>Твой возраст меньше 15 лет</p>
+	}
+	else if (Model.Age > 15)
+	{
+	<p> Твой возраст больше 15</p>
+	}
+	else
+	{
+	<p>Твой возраст равен 15</p>
+	}
+
+	@Html.Partial("~/Views/Widgets/Navigation.cshtml", new WebNETFirstProj.Models.Navigation() { CurrentPage = 1, FoundItems = 40, PageName = "Home" })
